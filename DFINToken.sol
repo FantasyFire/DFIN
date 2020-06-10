@@ -2,7 +2,7 @@ pragma solidity ^0.4.24;
 
 import './StandardToken.sol';
 
-contract DFINoken is StandardToken {
+contract DFINToken is StandardToken {
 
     string public name = 'Consensus Blockchain';
     string public symbol = 'DFIN';
