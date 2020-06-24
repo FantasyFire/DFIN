@@ -16,13 +16,14 @@ contract DFINToken is StandardToken, Ownable {
     
     // 池子
     uint[] public fundsPool;
+    // 白名单
     address[] public whiteList;
 
     // 创建时间
     uint public createTime = 0;
     
-    //回收池子DFIN事件
-    event WithdrawDFIN(uint8 indexed _poolIndex, uint256 _value);
+    // 回收池子DFIN事件
+    event WithdrawDFIN(uint256 _value);
     
     constructor() public {
         // 10%流通
@@ -82,29 +83,31 @@ contract DFINToken is StandardToken, Ownable {
                 months++;
             }
         }
-        months += 1;
+        months = months + 1;
 
-        // 池子剩余DFIN数
+        // 池子剩余DFIN数量
         uint remain = fundsPool[_poolIndex];
         // 计算仍冻结的DFIN
         uint locked = 0;
-        // 计算出可以分配的DFIN量
+        // 该时间节点能分配的DFIN数量
+        uint allocatableDFIN = 0;
+        // 计算出可以分配的DFIN数量
         if (_poolIndex == 0) { // 分5年释放，即60个月
             locked = (60 >= months ? 60 - months : 0) * (INITIAL_SUPPLY * 15 / 100 / 60);
-            remain = remain >= locked ? remain - locked : 0;
+            allocatableDFIN = remain >= locked ? remain - locked : 0;
         } else if (_poolIndex == 1) { // 分10年释放，即120个月
             locked = (120 >= months ? 120 - months : 0) * (INITIAL_SUPPLY * 35 / 100 / 120);
-            remain = remain >= locked ? remain - locked : 0;
+            allocatableDFIN = remain >= locked ? remain - locked : 0;
         } else if (_poolIndex == 2) { // 1年内锁定，1年后可以释放
-            remain = months >= 12 ? remain : 0;
+            allocatableDFIN = months >= 12 ? remain : 0;
         } else { // 不应该走入这个分支
-            remain = 0;
+            allocatableDFIN = 0;
         }
         
         // 有足够DFIN分配时进行分配
-        require(remain >= _value, "池子剩余DFIN不足分配");
-        fundsPool[_poolIndex] -= _value;
-        totalSupply_ += _value;
+        require(allocatableDFIN >= _value, "该时间节点能分配的DFIN数量不足分配");
+        fundsPool[_poolIndex] = fundsPool[_poolIndex] - _value;
+        totalSupply_ = totalSupply_ + _value;
         balances[_receiver] = balances[_receiver].add(_value);
         emit Transfer(0x0, _receiver, _value);
         return true;
@@ -112,18 +115,16 @@ contract DFINToken is StandardToken, Ownable {
     
     // 合约创建者可销毁池子里的DFIN
     function withdrawDFIN(
-        uint256 _value,
-        uint8 _poolIndex
+        uint256 _value
     )
         public
         onlyOwner
         returns (bool)
     {
         require(_value > 0, "不允许回收0DFIN，没有意义");
-        require(_poolIndex >= 0 && _poolIndex < 3, "只能回收前3个池子");
-        require(fundsPool[_poolIndex] >= _value, "池子内DFIN已不足回收量");
-        fundsPool[_poolIndex] -= _value;
-        emit WithdrawDFIN(_poolIndex, _value);
+        require(fundsPool[2] >= _value, "池子内DFIN已不足回收量");
+        fundsPool[2] = fundsPool[2] - _value;
+        emit WithdrawDFIN(_value);
         return true;
     }
 }
