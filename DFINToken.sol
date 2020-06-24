@@ -11,6 +11,8 @@ contract DFINToken is StandardToken, Ownable {
     // 总量3个亿
     uint public INITIAL_SUPPLY = 300000000 * (10 ** uint(decimals));
     
+    // 往后10年每个月的天数数组，用于计算释放时间
+    uint[] public releaseDays;
     
     // 池子
     uint[] public fundsPool;
@@ -41,6 +43,9 @@ contract DFINToken is StandardToken, Ownable {
         
         // 记录创建时间
         createTime = now;
+
+        // 初始化释放时间数组（第n个元素代表自createTime起，过了多少天认为是过了n+1个月）
+        releaseDays = [30,61,92,122,153,183,214,245,273,304,334,365,395,426,457,487,518,548,579,610,638,669,699,730,760,791,822,852,883,913,944,975,1003,1034,1064,1095,1125,1156,1187,1217,1248,1278,1309,1340,1369,1400,1430,1461,1491,1522,1553,1583,1614,1644,1675,1706,1734,1765,1795,1826,1856,1887,1918,1948,1979,2009,2040,2071,2099,2130,2160,2191,2221,2252,2283,2313,2344,2374,2405,2436,2464,2495,2525,2556,2586,2617,2648,2678,2709,2739,2770,2801,2830,2861,2891,2922,2952,2983,3014,3044,3075,3105,3136,3167,3195,3226,3256,3287,3317,3348,3379,3409,3440,3470,3501,3532,3560,3591,3621,3652];
     }
     
     // 从池子里分配DFIN，只有合约创建者可以执行
@@ -65,13 +70,24 @@ contract DFINToken is StandardToken, Ownable {
         }
         require(inWhiteList, "_receiver不在白名单");
         
+        // 计算自合约发布起，过去了多少天
+        // uint d = (now - createTime) / 1 days;
+        uint d = (now - createTime) / 4 seconds;
+        // 从释放时间数组找出对应的第几个月
+        uint months = 0;
+        while (months < 120) {
+            if (d < releaseDays[months]) {
+                break;
+            } else {
+                months++;
+            }
+        }
+        months += 1;
+
         // 池子剩余DFIN数
         uint remain = fundsPool[_poolIndex];
-        // 认为30天为1个月，这里计算出自合约发布起，过去了多少个月
-        uint months = (now - createTime) / 30 days + 1;
         // 计算仍冻结的DFIN
         uint locked = 0;
-        
         // 计算出可以分配的DFIN量
         if (_poolIndex == 0) { // 分5年释放，即60个月
             locked = (60 >= months ? 60 - months : 0) * (INITIAL_SUPPLY * 15 / 100 / 60);
