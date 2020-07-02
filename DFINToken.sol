@@ -7,7 +7,7 @@ contract DFINToken is StandardToken, Ownable {
 
     string public name = 'Consensus Blockchain';
     string public symbol = 'DEFI';
-    uint8 public decimals = 4;
+    uint8 public decimals = 8;
     // 总量3个亿
     uint public INITIAL_SUPPLY = 300000000 * (10 ** uint(decimals));
     
@@ -61,6 +61,8 @@ contract DFINToken is StandardToken, Ownable {
     {
         require(_value > 0, "不允许分配0DFIN，没有意义");
         require(_poolIndex >= 0 && _poolIndex < 3, "只能分配前3个池子");
+        // 自动补零
+        _value = _value * (10 ** uint(decimals));
         // 检索_receiver是否在白名单
         bool inWhiteList = false;
         for (uint i = 0; i < whiteList.length; i++) {
@@ -122,6 +124,8 @@ contract DFINToken is StandardToken, Ownable {
         returns (bool)
     {
         require(_value > 0, "不允许回收0DFIN，没有意义");
+        // 自动补零
+        _value = _value * (10 ** uint(decimals));
         require(fundsPool[2] >= _value, "池子内DFIN已不足回收量");
         fundsPool[2] = fundsPool[2] - _value;
         emit WithdrawDFIN(_value);
