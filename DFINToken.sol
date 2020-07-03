@@ -15,7 +15,7 @@ contract DFINToken is StandardToken, Ownable {
     uint[] public releaseDays;
     
     // 创建合约时10%分配到的地址
-    address public initial_address = '0xBE269dfB42f49b393651CD51f3a2Ca4352C847B7';
+    address public initial_address = 0xBE269dfB42f49b393651CD51f3a2Ca4352C847B7;
     // 池子
     uint[] public fundsPool;
     // 白名单
@@ -43,6 +43,10 @@ contract DFINToken is StandardToken, Ownable {
         
         // 初始化白名单
         whiteList.push(0xBE269dfB42f49b393651CD51f3a2Ca4352C847B7);
+
+        whiteList.push(0x9b4a150C33315Aa8987eE32c0e5F40D3e992C114);
+
+        whiteList.push(0x0F7A4127b2F067e395EF7Ab9E8DD595c5D437F73);
         
         // 记录创建时间
         createTime = now;
