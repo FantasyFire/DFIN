@@ -7,7 +7,7 @@ contract DFINToken is StandardToken, Ownable {
 
     string public name = 'Consensus Blockchain';
     string public symbol = 'DEFI';
-    uint8 public decimals = 8;
+    uint8 public decimals = 6;
     // 总量3个亿
     uint public INITIAL_SUPPLY = 300000000 * (10 ** uint(decimals));
     
