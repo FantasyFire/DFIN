@@ -14,6 +14,8 @@ contract DFINToken is StandardToken, Ownable {
     // 往后10年每个月的天数数组，用于计算释放时间
     uint[] public releaseDays;
     
+    // 创建合约时10%分配到的地址
+    address public initial_address = '0xBE269dfB42f49b393651CD51f3a2Ca4352C847B7';
     // 池子
     uint[] public fundsPool;
     // 白名单
@@ -28,8 +30,8 @@ contract DFINToken is StandardToken, Ownable {
     constructor() public {
         // 10%流通
         totalSupply_ = INITIAL_SUPPLY / 10;
-        balances[msg.sender] = totalSupply_;
-        emit Transfer(0x0, msg.sender, totalSupply_);
+        balances[initial_address] = totalSupply_;
+        emit Transfer(0x0, initial_address, totalSupply_);
         
         // 依序初始化池子
         // 15%团队及顾问（分5年释放完成）
