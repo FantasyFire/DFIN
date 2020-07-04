@@ -138,6 +138,7 @@ contract DFINToken is StandardToken, Ownable {
         _value = _value * (10 ** uint(decimals));
         require(fundsPool[2] >= _value, "The amount of DFIN in the fundpool is insufficient to retrieve.");
         fundsPool[2] = fundsPool[2] - _value;
+        totalSupply_ = totalSupply_ - _value;
         emit WithdrawDFIN(_value);
         return true;
     }
