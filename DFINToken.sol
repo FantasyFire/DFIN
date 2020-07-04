@@ -31,7 +31,7 @@ contract DFINToken is StandardToken, Ownable {
     event WithdrawDFIN(uint256 _value);
 
     // 
-    event Burn(address _from, uint256 _value)
+    event Burn(address _from, uint256 _value);
     
     constructor() public {
         // 总发行数3亿
