@@ -6,7 +6,7 @@ import './Ownable.sol';
 contract DFINToken is StandardToken, Ownable {
 
     string public name = 'DEFINANCE';
-    string public symbol = 'DFIN';
+    string public symbol = 'DFINtest';
     uint8 public decimals = 6;
     // A_total_of_300_million
     uint public INITIAL_SUPPLY = 300000000 * (10 ** uint(decimals));
@@ -16,8 +16,8 @@ contract DFINToken is StandardToken, Ownable {
     //The following 10 years, tokens will be release on a monthly basis based on the days recorded
     uint[] public releaseDays;
     
-    // 10%初始发行地址
-    address public initialAddress = 0xBE269dfB42f49b393651CD51f3a2Ca4352C847B7;
+    // 10% initial Address
+    address public initialAddress = 0x35c4a0A5331B00E8E3e8af2d6bF87391B735C21E;
     // Fundpool
     uint[] public fundsPool;
     
@@ -34,7 +34,7 @@ contract DFINToken is StandardToken, Ownable {
     event Burn(address _from, uint256 _value);
     
     constructor() public {
-        // 总发行数3亿
+        // totalSupply 300000000
         totalSupply_ = INITIAL_SUPPLY;
         // 10%_supply
         balances[initialAddress] = INITIAL_SUPPLY / 10;
@@ -49,14 +49,34 @@ contract DFINToken is StandardToken, Ownable {
         fundsPool.push(INITIAL_SUPPLY * 40 / 100);
         
         // Initial_whitelist
-        whiteList.push(0xBE269dfB42f49b393651CD51f3a2Ca4352C847B7);
+        whiteList.push(0x35c4a0A5331B00E8E3e8af2d6bF87391B735C21E);  
+        whiteList.push(0x75e2cc6cdfB4f3EF49fCcBFe0E2F7A7Ad4dDCFf1);  
+        whiteList.push(0xff40C95213f5908F315B036e73879B647f2b4167);  
+        whiteList.push(0xfEe93971c484886AA661751C5C971B72f4547c8E);  
+        whiteList.push(0x1016C70A8A7181aa3EEA84880bCE854f07E91410);  
+        whiteList.push(0xc4DA6E5Fa98926656A604068B56DAf4eBf0E5cd5);  
+        whiteList.push(0x3aDc956184eC3266c2c90760c8c6A60AfBF5A279);  
+        whiteList.push(0x8b95f4b54d8DdB969156e34adC992Bdcb051fb36);  
+        whiteList.push(0x4BB8Be7369f145917A9AC475df3F79B9640366b0);  
+        whiteList.push(0xdac18fAD59198b02Cc967BB5edC75B6e8881a851);  
+        whiteList.push(0xA7cf173Af2143acD11330fa2c8748B19B79E3AA6);  
+        whiteList.push(0xDA5Dd9Ca94cc689C4c5Ce42708b65BAE25279c74);  
+        whiteList.push(0xfCCa5A8d5Ef0C6BA23AcbDBf2652565e8Bd1269b);  
+        whiteList.push(0x20c1C8B34D96c312060a758f8f7440F7D6F9779d);  
+        whiteList.push(0x11D8bE6c73FAF023117C226d08A08fF380571617);  
+        whiteList.push(0x60a08Ba2688F1F94A8Ea3CB7e1F917c514E45f54);  
+        whiteList.push(0x461cf291ecAa62A2eb682DBFF8d2b4B530334CD5);  
+        whiteList.push(0x479Fd5A1c96a0109799Ecb9408d23f6F3CFA8613);  
+        whiteList.push(0xbD05ACD1875e10aDCFF18897AA20a02c1EC51ec6);  
+        whiteList.push(0x61Fd74d003FF9d557a5aF5a470611714ECDb5e45);  
+        whiteList.push(0xF7fF79a41c7020361660d09312BAA67B659E7D4D);  
         
         // Recorded_creation_time
         createTime = now;
 
       
         // initialize the release time array (the nth element represents how much has passed since createTime Day is considered to be an array of days per month for the next 10 years after n+1 months, used to calculate the release time)
-        releaseDays = [30,61,92,122,153,183,214,245,273,304,334,365,395,426,457,487,518,548,579,610,638,669,699,730,760,791,822,852,883,913,944,975,1003,1034,1064,1095,1125,1156,1187,1217,1248,1278,1309,1340,1369,1400,1430,1461,1491,1522,1553,1583,1614,1644,1675,1706,1734,1765,1795,1826,1856,1887,1918,1948,1979,2009,2040,2071,2099,2130,2160,2191,2221,2252,2283,2313,2344,2374,2405,2436,2464,2495,2525,2556,2586,2617,2648,2678,2709,2739,2770,2801,2830,2861,2891,2922,2952,2983,3014,3044,3075,3105,3136,3167,3195,3226,3256,3287,3317,3348,3379,3409,3440,3470,3501,3532,3560,3591,3621,3652];
+        releaseDays = [31,62,92,123,153,184,215,243,274,304,335,365,396,427,457,488,518,549,580,608,639,669,700,730,761,792,822,853,883,914,945,973,1004,1034,1065,1095,1126,1157,1187,1218,1248,1279,1310,1339,1370,1400,1431,1461,1492,1523,1553,1584,1614,1645,1676,1704,1735,1765,1796,1826,1857,1888,1918,1949,1979,2010,2041,2069,2100,2130,2161,2191,2222,2253,2283,2314,2344,2375,2406,2434,2465,2495,2526,2556,2587,2618,2648,2679,2709,2740,2771,2800,2831,2861,2892,2922,2953,2984,3014,3045,3075,3106,3137,3165,3196,3226,3257,3287,3318,3349,3379,3410,3440,3471,3502,3530,3561,3591,3622,3652];
     }
     
    // Only_the_contract_creator_has_the_right_to_allocate_DFIN_from_fundpool
@@ -133,7 +153,7 @@ contract DFINToken is StandardToken, Ownable {
         onlyOwner
         returns (bool)
     {
-        require(_value > 0, "Retrieving 0 DFIN is not allowed. No meaning.");
+        require(_value > 0, "Retrieving 0 DFIN is not allowed.");
         // Automatic zero padding
         _value = _value * (10 ** uint(decimals));
         require(fundsPool[2] >= _value, "The amount of DFIN in the fundpool is insufficient to retrieve.");
@@ -143,7 +163,7 @@ contract DFINToken is StandardToken, Ownable {
         return true;
     }
 
-    // 自行销毁DFIN
+       // _owner destroy DFIN
     function burn(uint256 _value) public returns (bool success) {
         require(balances[msg.sender] >= _value);                 // Check if the sender has enough
         balances[msg.sender] = balances[msg.sender] - _value;    // Subtract from the sender
@@ -152,7 +172,7 @@ contract DFINToken is StandardToken, Ownable {
         return true;
     }
 
-    // 代理销毁DFIN
+    // Destroy DFIN
     function burnFrom(address _from, uint256 _value) public returns (bool success) {
         require(balances[_from] >= _value);                                       // Check if the targeted balance is enough
         require(_value <= allowed[_from][msg.sender]);                            // Check allowance
